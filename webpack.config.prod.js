@@ -9,7 +9,7 @@ module.exports = {
     output: {
         filename: "./dist/bundle.js",
     },
-    devtool: "source-map",
+    // devtool: "source-map",
     resolve: {
         extensions: ["", ".webpack.js", ".web.js", ".ts", ".js"]
     },
@@ -23,7 +23,8 @@ module.exports = {
         warnings: false,
       },
     }),
-    new webpack.optimize.OccurrenceOrderPlugin()
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new ExtractTextPlugin('/dist/styles/bundle.css')
   ],
   postcss: [
     autoprefixer({
@@ -34,30 +35,13 @@ module.exports = {
         loaders: [
             // ts -> ES6 -> babel -> ES5
             { test: /\.tsx?$/, loaders: ["babel-loader", "ts-loader"] },
-            {
-                test: /\.js$/,
-                loader: 'babel',
-                exclude: /(node_modules|bower_components)/
-            },
-            { test: /\.css$/, loader: 'style-loader!css-loader' },
-            {
-                test: /\.scss$/,
-                loader: 'style-loader!css-loader!sass-loader'
-            },
-            {
-                test: /\.html$/,
-                loader: 'raw-loader'
-            },
-            {
-                test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-                loader: 'url?limit=10000&mimetype=application/font-woff&name=fonts/[name].[ext]'
-            }, {
-                test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-                loader: 'file?name=fonts/[name].[ext]'
-            }, {
-                test: /\.(jp(e)g|gif|png)?$/,
-                loader: 'file?name=img/[name].[ext]'
-            }
+            { test: /\.js$/, loader: 'babel',  exclude: /(node_modules|bower_components)/ },
+            { test: /\.css$/, loader: ExtractTextPlugin.extract('style-loader', 'css-loader')  },
+            { test: /\.scss$/, loader: ExtractTextPlugin.extract('style-loader', 'css-loader!sass-loader')  },
+            { test: /\.html$/, loader: 'raw-loader' },
+            { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'url?limit=10000&mimetype=application/font-woff&name=fonts/[name].[ext]'}, 
+            { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file?name=fonts/[name].[ext]'}, 
+            { test: /\.(jp(e)g|gif|png)?$/, loader: 'file?name=img/[name].[ext]'}
         ],
 
         preLoaders: [

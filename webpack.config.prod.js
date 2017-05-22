@@ -7,7 +7,8 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 module.exports = {
     entry: "./src/typescripts/main.ts",
     output: {
-        filename: "./dist/bundle.js",
+        path: './dist',
+        filename: "./bundle.js",
     },
     // devtool: "source-map",
     resolve: {
@@ -24,7 +25,7 @@ module.exports = {
       },
     }),
     new webpack.optimize.OccurrenceOrderPlugin(),
-    new ExtractTextPlugin('/dist/styles/bundle.css')
+    new ExtractTextPlugin('/styles/bundle.css')
   ],
   postcss: [
     autoprefixer({
